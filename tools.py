@@ -1,4 +1,5 @@
 ## Funcoes
+import numpy as np
 
 ## 1) Pega ultima geometria do log (printa a ultima geometria)
 
