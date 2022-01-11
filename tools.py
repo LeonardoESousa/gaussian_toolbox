@@ -20,9 +20,29 @@ def pega_freqs(file):
                 pass
     return freq
 
-
 ## 3) Pega (ultimas) energias e forcas de oscilador (duas listas)
 
 ## 4) Pega funcional e base usados no calculo (Com IOPs se tiver) (retornar uma string)
 
 ## 5) Pega o transition dipole moment do S1 (retorna um numero)
+def get_moment(file):
+    busca = "transition electric dipole moments" 
+    n = -1
+    with open(file ,'r') as f:
+        for line in f:
+            if busca in line:
+                n = 0
+                dip_sqrd = []
+            elif n >= 0 and n < 1:
+                n += 1
+            elif n == 1 and "transition velocity" not in line:    
+                line = line.split()
+                dip_vec = []
+                for j in range(1,4):
+                    dip_vec.append(float(line[j]))
+                dip_sqrd.append(float(line[4]))
+                n +=1
+            elif n >= 3:
+                n = -1
+        mu=np.sqrt(float(dip_sqrd[-1])) 
+    return mu,dip_vec 
