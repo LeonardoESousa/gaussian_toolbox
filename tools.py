@@ -22,6 +22,23 @@ def pega_freqs(file):
     return freq
 
 ## 3) Pega (ultimas) energias e forcas de oscilador (duas listas)
+def energy_and_osc(file):
+    exc_energies = []
+    osc_str = []
+    with open(file,'r') as f:
+        i=0
+        for line in f:
+            if 'Excited State' in line:
+                if 'Excited State   1:' in line:
+                    i+=1
+                    if i>1:
+                        exc_energies.clear()
+                        osc_str.clear()
+                        i=0
+                line=line.replace('=',' ').split()
+                exc_energies.append(float(line[4]))
+                osc_str.append(float(line[9]))
+    return exc_energies,osc_str
 
 ## 4) Pega funcional e base usados no calculo (Com IOPs se tiver) (retornar uma string)
 
