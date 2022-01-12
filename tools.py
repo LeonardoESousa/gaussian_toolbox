@@ -42,6 +42,24 @@ def energy_and_osc(file):
 
 ## 4) Pega funcional e base usados no calculo (Com IOPs se tiver) (retornar uma string)
 
+important_lines = []
+
+with open('freq.log', 'r') as file: 
+    for index, line in enumerate(file):
+        if ('# ') in line:
+            important_lines.append(line)
+            
+important_line = important_lines[0]
+important_line = important_line.split(' ')
+if('iop') in important_line:
+    print(important_line)
+for word in important_line:
+    if ('/' and '-') in word:
+        print('O nivel de calculo e as iops presentes na simulacao realizada sao:')
+        print(word)
+    elif ('iop') in word:
+        print(word)
+
 ## 5) Pega o transition dipole moment do S1 (retorna um numero)
 def get_moment(file):
     busca = "transition electric dipole moments" 
