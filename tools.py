@@ -48,7 +48,7 @@ def func_basis_iop(file):
     iop = []
     var = []
     with open(file, 'r') as f: 
-        for line in file:
+        for line in f:
             if ('SCF Done: ') in line:
                 functional = line.split('(R')
                 functional = functional[1]
