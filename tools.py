@@ -42,20 +42,32 @@ def energy_and_osc(file):
 
 ## 4) Pega funcional e base usados no calculo (Com IOPs se tiver) (retornar uma string)
 def func_basis_iop(file):
-    important_lines = []
+    linha = []
+    functional = []
+    basis = []
     iop = []
+    var = []
     with open(file, 'r') as f: 
-        for index, line in enumerate(f):
-            if ('# ') in line:
-                important_lines.append(line)        
-    important_line = important_lines[0]
-    important_line = important_line.split(' ')
-    for word in important_line:
-        if ('/' and '-') in word:
-            func_basis = word
-        elif ('iop') in word:
-            iop.append(word)
-    return func_basis,iop
+        for line in file:
+            if ('SCF Done: ') in line:
+                functional = line.split('(R')
+                functional = functional[1]
+                functional = functional.split(')')
+                functional = functional[0]
+            if ('Standard basis: ') in line:
+                basis = line.split(': ')
+                basis = basis[1]
+                basis = basis.split(' (')
+                basis = basis[0]
+            if ('3/107=') in line:
+                linha.append(line)
+                iop = linha[0]
+                iop = iop.split(' ')
+                for word in iop:
+                    if ('3/108=' or '3/107=') in word:
+                        var.append(word)
+                iop =' '.join([str(item) for item in var])
+    return functional,basis,iop
     
 ## 5) Pega o transition dipole moment do S1 (retorna um numero)
 def get_moment(file):
