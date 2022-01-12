@@ -91,3 +91,22 @@ def get_moment(file):
                 n = -1
         mu=np.sqrt(float(dip_sqrd[-1])) 
     return mu,dip_vec 
+
+    ###### BATCH 2
+
+    #1) i)Ajustar a funcao 1 do batch 1 pra retornar um array com as geometrias e outro com os atomos.
+
+    #2) i) Ajustar a funcao 2 do batch 1 pra retornar uma array de frequencias e um array de massas reduzidas. As freqs devem ser convertidas de cm^-1 para freq angular (Hz) e massas reduzidas de au para kg.
+    ### ii) Fazer uma funcao nova que calcula a distribuicao de modos normais pra cada frequencia. Argumentos: nome do arquivo, temperatura. Retorna:
+
+    #3) i) Ajustar a funcao 3 do batch 1 pra retornar um array com energias e outro array com forcas de oscilador
+    #   ii) Fazer uma funcao que calcula o espectro de absorcao usando as energias e forcas de oscilador. Use a expressao que a gente usa no nuclear ensemble com só uma geometria. Cada excitacao deve contribuir com uma gaussiana centrada
+    #na energia de transicao e com um desvio padrao sigma. Argumentos: nome do arquivo, sigma. Retorna: dois arrays: os valores para os eixos x e y do espectro. 
+
+
+    #4) i) Fazer uma funcao que gera inputs para os calculos de energia de reorganizacao com mesmo nivel de calculo que o log que serve de input.
+    ## Argumentos: nome do arquivo. Retorna: Nada, mas cria dois inputs de opt: um com carga positiva e outro negativa.  
+
+
+    #5) i) Ajustar funcao 5 do batch 1 pra retornar apenas um array com as componentes do vetor.
+    ##  ii)  
