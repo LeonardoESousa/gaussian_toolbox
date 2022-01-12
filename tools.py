@@ -67,7 +67,7 @@ def func_basis_iop(file):
                     if ('3/108=' or '3/107=') in word:
                         var.append(word)
                 iop =' '.join([str(item) for item in var])
-    return functional,basis,iop
+        return functional+' '+basis+' '+iop
     
 ## 5) Pega o transition dipole moment do S1 (retorna um numero)
 def get_moment(file):
