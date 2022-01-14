@@ -1,25 +1,53 @@
 ## Funcoes
 import numpy as np
 
+import matplotlib.pyplot as plt
+
+from scipy import constants
+
 ## 1) Pega ultima geometria do log (printa a ultima geometria)
 
 ## 2) Pega as frequencias (retorna lista de frequencias)
 
-def pega_freqs(file):
+def pega_freqs_redmas(file):
     freq = []
+    redmas = []
     with open(file, 'r') as f:#abre o arquivo pra ler
         for line in f: #para cada elemento(no caso linha) do arquivo
             line = line.split() #separa cada elemento(da linha) por espaço
-            if "Frequencies" in line: #se tiver "Frequencies" na linha
+            if 'Frequencies' in line: #se tiver "Frequencies" na linha
                 for elem in line: #para cada elemento da linha
                     try: #tente pegar os numeros
                         numero = float(elem)
                         freq.append(numero) #se for numero colocar na lista
                     except:
                         pass
+            elif 'masses' in line:
+                for elem in line: #para cada elemento da linha
+                    try: #tente pegar os numeros
+                        numero = float(elem)
+                        redmas.append(numero) #se for numero colocar na lista
+                    except:
+                        pass
             else:
                 pass
-    return freq
+    freq = np.array(freq)
+    freq = 29.979245800*freq*1E9 #Hz
+    redmas = np.array(redmas)
+    amu = constants.atomic_mass
+    redmas = amu*redmas
+    return freq, redmas
+
+def dist_modos_nor(file, T):
+    freq, redmas = pega_freqs_redmas(file)
+    h = constants.hbar
+    k = constants.Boltzmann
+    R = np.linspace(-1, 1, 100)*1E-10
+    for i in range(len(freq)):
+        rho = ((redmas[i]*freq[i])/(2*np.pi*h*np.sinh(h*freq[i]/(k*T))))*np.exp((-redmas[i]*freq[i]/h)*(R**2)*np.tanh(h*freq[i]/(2*k*T)))
+        plt.plot(R,rho)
+    plt.show()
+    return rho
 
 ## 3) Pega (ultimas) energias e forcas de oscilador (duas listas)
 def energy_and_osc(file):
