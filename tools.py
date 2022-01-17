@@ -159,4 +159,4 @@ def get_moment(file):
 
 
     #5) i) Ajustar funcao 5 do batch 1 pra retornar apenas um array com as componentes do vetor.
-    ##  ii)  
+    ##  ii) Fazer um notebook jupyter com análise de KMC 
