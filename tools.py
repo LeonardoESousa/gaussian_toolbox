@@ -7,6 +7,28 @@ from scipy import constants
 
 ## 1) Pega ultima geometria do log (printa a ultima geometria)
 
+def pega_geometria(file):
+    arquivo = open(file, 'r')
+    lista = arquivo.readlines()
+    i=1
+    for linha in lista:
+        i += 1
+        if 'Standard orientation:' in linha:
+            j=i+3
+        if "NAtoms=" in linha:
+            aux=linha.split()
+            num_a=int(aux[1])
+    
+    geom=lista[j:j+num_a]
+    es="    "
+    arquivo=open('geometria.txt', 'w')
+    for linha in geom:
+        aux=linha.split()
+        linha_formatada=aux[1]+es+aux[3]+es+aux[4]+es+aux[5]+"\n"
+        arquivo.write(linha_formatada)
+    
+
+
 ## 2) Pega as frequencias (retorna lista de frequencias)
 
 def pega_freqs_redmas(file):
