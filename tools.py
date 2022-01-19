@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 
 from scipy import constants
 
+import scipy.stats as stats
 ## 1) Pega ultima geometria do log (printa a ultima geometria)
 
 def pega_geometria(file):
@@ -150,9 +151,67 @@ def get_moment(file):
     ### ii) Fazer uma funcao nova que calcula a distribuicao de modos normais pra cada frequencia. Argumentos: nome do arquivo, temperatura. Retorna:
 
     #3) i) Ajustar a funcao 3 do batch 1 pra retornar um array com energias e outro array com forcas de oscilador
+def energy_and_osc(file):
+    exc_energies = []
+    osc_str = []
+    with open(file, 'r') as f:
+        i = 0
+        for line in f:
+            if 'Excited State' in line:
+                if 'Excited State   1:' in line:
+                    i += 1
+                    if i > 1:
+                        exc_energies.clear()
+                        osc_str.clear()
+                        i = 0
+                line = line.replace('=', ' ').split()
+                exc_energies.append(float(line[4]))
+                osc_str.append(float(line[9]))
+    energy = np.array(exc_energies)
+    f_osc = np.array(osc_str)
+    return energy,f_osc
+    
     #   ii) Fazer uma funcao que calcula o espectro de absorcao usando as energias e forcas de oscilador. Use a expressao que a gente usa no nuclear ensemble com só uma geometria. Cada excitacao deve contribuir com uma gaussiana centrada
     #na energia de transicao e com um desvio padrao sigma. Argumentos: nome do arquivo, sigma. Retorna: dois arrays: os valores para os eixos x e y do espectro. 
+def abs_spectra(file,sigma):
+    energy, f_osc = energy_and_osc(file)
+    y_ax = 0
+    x_ax=np.linspace(energy.min()-10*sigma, energy.max()+10*sigma, 100)
+    cte=((constants.pi*(constants.e**2)*constants.hbar)/(2*constants.m_e*constants.c*constants.epsilon_0))
+    
+    for i in range(len(energy)):
+        spec=cte*f_osc[i]*stats.norm.pdf(x_ax, energy[i], sigma)
+        y_ax = y_ax + spec
 
+    return cte,x_ax,y_ax
+
+    #    iii) Plota espectro de absorcao
+def plot_abs_spectra(file,sigma):
+    energy, f_osc = energy_and_osc(file)
+    cte,x_ax, y_ax = abs_spectra(file,sigma)
+    
+    ##### PLOT ####
+    fig, ax = plt.subplots(figsize=(10,5))
+    #plt.vlines(x=energy,ymin=0,ymax=30*cte*f_osc,color='red',ls=':',lw=2, label='Excited State Energy')    #Excited State Energy proportional to oscillator strength              
+    plt.vlines(x=energy,ymin=0,ymax=20*cte,color='red',ls=':',lw=2, label='Excited State Energy')
+    
+    #### FONT #####
+    plt.rcParams["font.family"] = 'Times New Roman'
+    csfont = {'fontname':'Times New Roman'}
+
+    #### STYLE ####
+    ax.plot(x_ax,y_ax, lw=2, color='blue', label='Absorption Spectra') 
+    ax.set_xlabel('Energy (eV)', size=18,**csfont)   
+    ax.set_ylabel('Cross Section ($\AA$²)', size=18,**csfont)
+    #ax.set_xlim([0,5])
+    #ax.set_ylim([0,1.0e-40])
+    #ax.set_xticks([0,1,2,3,4,5])
+    #ax.set_yticks([0,1.0e-40]) 
+    ax.tick_params(axis='both', which='major', labelsize=12)
+
+    plt.legend(loc='upper center', fontsize=14)
+    plt.tight_layout() 
+    plt.show()
 
     #4) i) Fazer uma funcao que gera inputs para os calculos de energia de reorganizacao com mesmo nivel de calculo que o log que serve de input.
     ## Argumentos: nome do arquivo. Retorna: Nada, mas cria dois inputs de opt: um com carga positiva e outro negativa.  
