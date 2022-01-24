@@ -9,6 +9,8 @@ import scipy.stats as stats
 ## 1) Pega ultima geometria do log (printa a ultima geometria)
 
 def pega_geometria(file):
+    atomos = []
+    matriz = []
     arquivo = open(file, 'r')
     lista = arquivo.readlines()
     i=1
@@ -27,7 +29,12 @@ def pega_geometria(file):
         aux=linha.split()
         linha_formatada=aux[1]+es+aux[3]+es+aux[4]+es+aux[5]+"\n"
         arquivo.write(linha_formatada)
-    
+        atomos.append(aux[1])
+        matriz.append([aux[3],aux[4],aux[5]])
+    atomos=np.array(atomos)
+    atomos=np.array(matriz)
+    return atomos, matriz
+ 
 
 
 ## 2) Pega as frequencias (retorna lista de frequencias)
