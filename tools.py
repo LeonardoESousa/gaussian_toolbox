@@ -221,7 +221,7 @@ def plot_abs_spectra(file,sigma):
 
     #4) i) Fazer uma funcao que gera inputs para os calculos de energia de reorganizacao com mesmo nivel de calculo que o log que serve de input.
     ## Argumentos: nome do arquivo. Retorna: Nada, mas cria dois inputs de opt: um com carga positiva e outro negativa.  
-    def header(file):
+def header(file):
     with open(file, 'r') as f: 
         for line in f:
             if ('%nproc') in line:
