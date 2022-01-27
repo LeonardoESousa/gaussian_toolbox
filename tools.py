@@ -232,7 +232,6 @@ def header(file):
                 mem = mem[0]
     return nproc,mem
 def reorg_energy(file):
-    aux = []
     atomos, geometria = pega_geometria(file)
     _func_basis_iop =  func_basis_iop(file)
     nproc, mem = header(file)
@@ -258,8 +257,6 @@ def reorg_energy(file):
         sp= '     '
         for i in range(len(atomos)):
             minus.write(str(atomos[i]) + sp + str(geometria[i,0]) + sp + str(geometria[i,1]) + sp + str(geometria[i,2]) + '\n')
-    return  'Files opt_chargeplus.com and opt_chargeminus.com created in the directory.'
-
 
     #5) i) Ajustar funcao 5 do batch 1 pra retornar apenas um array com as componentes do vetor.
     ##  ii) Fazer um notebook jupyter com análise de KMC 
