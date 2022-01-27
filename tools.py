@@ -124,7 +124,7 @@ def func_basis_iop(file):
                     if (element) not in newvar:
                         newvar.append(element)
                 iop =' '.join([str(item) for item in newvar])
-        return functional+' '+basis+' '+iop
+        return functional+'/'+basis+' '+iop
     
 ## 5) Pega o transition dipole moment do S1 (retorna um numero)
 def get_moment(file):
@@ -235,18 +235,11 @@ def reorg_energy(file):
     aux = []
     atomos, geometria = pega_geometria(file)
     _func_basis_iop =  func_basis_iop(file)
-    func = _func_basis_iop.split(' ')
-    basis = func[1]
-    for element in func:
-         if ('iop') in element:
-            aux.append(element)
-    iop = ' '.join(aux)
-    func = func[0]
     nproc, mem = header(file)
     with open('opt_chargeplus.com', 'w') as plus:
         plus.write(nproc + '\n')
         plus.write(mem + '\n')
-        plus.write(' #n ' + func + '/' + basis + ' ' + iop + ' ' + 'opt' + '\n')
+        plus.write(' #n ' + _func_basis_iop + ' ' + 'opt' + '\n')
         plus.write(' ' + '\n')
         plus.write('  Charged +' + '\n')
         plus.write(' ' + '\n')
@@ -257,7 +250,7 @@ def reorg_energy(file):
     with open('opt_chargeminus.com', 'w') as minus:
         minus.write(nproc + '\n')
         minus.write(mem + '\n')
-        minus.write(' #n ' + func + '/' + basis + ' ' + iop + ' ' + 'opt' + '\n')
+        minus.write(' #n ' +  _func_basis_iop + ' ' + 'opt' + '\n')
         minus.write(' ' + '\n')
         minus.write('  Charged -' + '\n')
         minus.write(' ' + '\n')
