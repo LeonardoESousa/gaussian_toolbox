@@ -100,6 +100,7 @@ def func_basis_iop(file):
     basis = []
     iop = []
     var = []
+    newvar = []
     with open(file, 'r') as f: 
         for line in f:
             if ('SCF Done: ') in line:
@@ -112,14 +113,17 @@ def func_basis_iop(file):
                 basis = basis[1]
                 basis = basis.split(' (')
                 basis = basis[0]
-            if ('3/107=') in line:
+            if ('(3/107=') in line:
                 linha.append(line)
                 iop = linha[0]
                 iop = iop.split(' ')
                 for word in iop:
-                    if ('3/108=' or '3/107=') in word:
+                    if ('iop') in word:
                         var.append(word)
-                iop =' '.join([str(item) for item in var])
+                for element in var:
+                    if (element) not in newvar:
+                        newvar.append(element)
+                iop =' '.join([str(item) for item in newvar])
         return functional+' '+basis+' '+iop
     
 ## 5) Pega o transition dipole moment do S1 (retorna um numero)
@@ -217,6 +221,51 @@ def plot_abs_spectra(file,sigma):
 
     #4) i) Fazer uma funcao que gera inputs para os calculos de energia de reorganizacao com mesmo nivel de calculo que o log que serve de input.
     ## Argumentos: nome do arquivo. Retorna: Nada, mas cria dois inputs de opt: um com carga positiva e outro negativa.  
+    def header(file):
+    with open(file, 'r') as f: 
+        for line in f:
+            if ('%nproc') in line:
+                nproc = line.split('\n')
+                nproc = nproc[0]
+            if ('%mem') in line:
+                mem = line.split('\n')
+                mem = mem[0]
+    return nproc,mem
+def reorg_energy(file):
+    aux = []
+    atomos, geometria = pega_geometria(file)
+    _func_basis_iop =  func_basis_iop(file)
+    func = _func_basis_iop.split(' ')
+    basis = func[1]
+    for element in func:
+         if ('iop') in element:
+            aux.append(element)
+    iop = ' '.join(aux)
+    func = func[0]
+    nproc, mem = header(file)
+    with open('opt_chargeplus.com', 'w') as plus:
+        plus.write(nproc + '\n')
+        plus.write(mem + '\n')
+        plus.write(' #n ' + func + '/' + basis + ' ' + iop + ' ' + 'opt' + '\n')
+        plus.write(' ' + '\n')
+        plus.write('  Charged +' + '\n')
+        plus.write(' ' + '\n')
+        plus.write('1 2' + '\n')
+        sp= '     '
+        for i in range(len(atomos)):
+            plus.write(str(atomos[i]) + sp + str(geometria[i,0]) + sp + str(geometria[i,1]) + sp + str(geometria[i,2]) + '\n')
+    with open('opt_chargeminus.com', 'w') as minus:
+        minus.write(nproc + '\n')
+        minus.write(mem + '\n')
+        minus.write(' #n ' + func + '/' + basis + ' ' + iop + ' ' + 'opt' + '\n')
+        minus.write(' ' + '\n')
+        minus.write('  Charged -' + '\n')
+        minus.write(' ' + '\n')
+        minus.write('-1 2' + '\n')
+        sp= '     '
+        for i in range(len(atomos)):
+            minus.write(str(atomos[i]) + sp + str(geometria[i,0]) + sp + str(geometria[i,1]) + sp + str(geometria[i,2]) + '\n')
+    return  'Files opt_chargeplus.com and opt_chargeminus.com created in the directory.'
 
 
     #5) i) Ajustar funcao 5 do batch 1 pra retornar apenas um array com as componentes do vetor.
