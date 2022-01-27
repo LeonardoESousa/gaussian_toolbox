@@ -23,18 +23,13 @@ def pega_geometria(file):
             num_a=int(aux[1])
     
     geom=lista[j:j+num_a]
-    es="    "
-    arquivo=open('geometria.txt', 'w')
     for linha in geom:
         aux=linha.split()
-        linha_formatada=aux[1]+es+aux[3]+es+aux[4]+es+aux[5]+"\n"
-        arquivo.write(linha_formatada)
-        atomos.append(aux[1])
-        matriz.append([aux[3],aux[4],aux[5]])
+        atomos.append(int(aux[1]))
+        matriz.append([float(aux[3]),float(aux[4]),float(aux[5])])
     atomos=np.array(atomos)
-    atomos=np.array(matriz)
+    matriz=np.array(matriz)
     return atomos, matriz
- 
 
 
 ## 2) Pega as frequencias (retorna lista de frequencias)
