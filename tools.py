@@ -279,3 +279,4 @@ def get_moment_vector(file):
     return mu_components 
 
     ##  ii) Fazer um notebook jupyter com análise de KMC 
+        ########### UNDER CONSTRUCTION ###########
