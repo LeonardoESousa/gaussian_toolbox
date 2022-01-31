@@ -147,7 +147,7 @@ def get_moment(file):
             elif n >= 3:
                 n = -1
         mu=np.sqrt(float(dip_sqrd[-1])) 
-    return mu,dip_vec 
+    return mu
 
     ###### BATCH 2
 
