@@ -259,4 +259,26 @@ def reorg_energy(file):
             minus.write(str(atomos[i]) + sp + str(geometria[i,0]) + sp + str(geometria[i,1]) + sp + str(geometria[i,2]) + '\n')
 
     #5) i) Ajustar funcao 5 do batch 1 pra retornar apenas um array com as componentes do vetor.
+def get_moment(file):
+    busca = "transition electric dipole moments" 
+    n = -1
+    with open(file ,'r') as f:
+        for line in f:
+            if busca in line:
+                n = 0
+                dip_sqrd = []
+            elif n >= 0 and n < 1:
+                n += 1
+            elif n == 1 and "transition velocity" not in line:    
+                line = line.split()
+                dip_vec = []
+                for j in range(1,4):
+                    dip_vec.append(float(line[j]))
+                dip_sqrd.append(float(line[4]))
+                n +=1
+            elif n >= 3:
+                n = -1
+        mu_components = np.array(dip_vec)
+    return mu_components 
+
     ##  ii) Fazer um notebook jupyter com análise de KMC 
