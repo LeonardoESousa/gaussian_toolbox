@@ -259,7 +259,7 @@ def reorg_energy(file):
             minus.write(str(atomos[i]) + sp + str(geometria[i,0]) + sp + str(geometria[i,1]) + sp + str(geometria[i,2]) + '\n')
 
     #5) i) Ajustar funcao 5 do batch 1 pra retornar apenas um array com as componentes do vetor.
-def get_moment(file):
+def get_moment_vector(file):
     busca = "transition electric dipole moments" 
     n = -1
     with open(file ,'r') as f:
